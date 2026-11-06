@@ -1,17 +1,21 @@
 <!DOCTYPE html>
 <html lang="nl"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-lnx6gO1s9/YPd+AmLpHLy+CfQ456ZP7NDBj51ysY0bc='; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-AtTuul+DPyarUDC82JsQ9neDWpMO8xFfCFdCs9/JLdQ='; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="robots" content="noindex,nofollow">
 <title>Mail openen</title>
-<style>body{font:17px Inter,-apple-system,Helvetica,sans-serif;text-align:center;padding:72px 20px;color:#e6e9f2;background:linear-gradient(#0b1020,#05070c);min-height:100vh;margin:0;box-sizing:border-box}a{display:none;margin-top:18px;padding:12px 22px;background:linear-gradient(90deg,#5ff3d0,#4cc3ff,#8b6bff);color:#05070c;font-weight:600;border-radius:12px;text-decoration:none}</style>
+<style>body{font:17px Inter,-apple-system,Helvetica,sans-serif;text-align:center;padding:72px 20px;color:#e6e9f2;background:linear-gradient(#0b1020,#05070c);min-height:100vh;margin:0;box-sizing:border-box}#a{display:none;margin-top:18px;padding:12px 22px;background:linear-gradient(90deg,#5ff3d0,#4cc3ff,#8b6bff);color:#05070c;font-weight:600;border-radius:12px;text-decoration:none}#g{display:none;margin-top:22px;color:#9aa3b8;font-size:15px}p.s{color:#9aa3b8;font-size:14px;margin-top:28px}</style>
 </head><body>
 <p id="m">Mail wordt geopend in Apple Mail…</p>
-<a id="a" href="#">✉ Mail openen</a>
-<script>(function(){var h=decodeURIComponent((location.hash||"").slice(1)).replace(/^<|>$/g,"");
-var ok=/^[A-Za-z0-9!#$%&'*+\/=?^_`{|}~.\-]{1,250}@[A-Za-z0-9.\-]{1,250}$/.test(h);
-var a=document.getElementById("a"),m=document.getElementById("m");
-if(!ok){m.textContent="Ongeldige link.";return}
-var u="message://"+encodeURIComponent("<"+h+">");a.href=u;a.style.display="inline-block";location.replace(u)})();</script>
+<a id="a" href="#">✉ Mail openen</a><br>
+<a id="g" href="#">Niet gevonden in Apple Mail? Open in Gmail</a>
+<script>(function(){var raw=(location.hash||"").slice(1),mid="",g="";
+if(raw.indexOf("m=")===0){raw.split("&").forEach(function(p){var i=p.indexOf("=");if(i<0)return;var k=p.slice(0,i),v=decodeURIComponent(p.slice(i+1));if(k==="m")mid=v;if(k==="g")g=v})}else{mid=decodeURIComponent(raw)}
+mid=mid.replace(/^<|>$/g,"");
+var ok=/^[A-Za-z0-9!#$%&'*+\/=?^_`{|}~.\-]{1,250}@[A-Za-z0-9.\-]{1,250}$/.test(mid);
+var a=document.getElementById("a"),m=document.getElementById("m"),b=document.getElementById("g");
+if(/^[0-9a-f]{12,16}$/.test(g)){var dec=BigInt("0x"+g).toString();b.href="https://mail.google.com/mail/?authuser=ericjan.deroode@synergygroup.nl#all/thread-f:"+dec+"|msg-f:"+dec;b.style.display="inline-block"}
+if(!ok){m.textContent=b.style.display?"Mail niet in Apple Mail te openen.":"Ongeldige link.";return}
+var u="message://"+encodeURIComponent("<"+mid+">");a.href=u;a.style.display="inline-block";location.replace(u)})();</script>
 </body></html>
